@@ -1,5 +1,5 @@
-
 import 'package:ecommerce_course/address_pages/adress_add.dart';
+import 'package:ecommerce_course/imagesprovider/images_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,9 +11,20 @@ import 'package:ecommerce_course/home_pages/basket_model.dart';
 import 'package:ecommerce_course/reviews/add_review.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
-  final int productId;
+  late final int productId;
+  final String name;
+  final String description;
+  final double price;
+  Imagess fx;
 
-  OrderDetailsScreen(this.productId, {Key? key}) : super(key: key);
+  OrderDetailsScreen(
+      {required this.productId,
+      required this.fx,
+      required this.name,
+      required this.description,
+      required this.price,
+      Key? key})
+      : super(key: key);
 
   @override
   _OrderDetailsScreenState createState() => _OrderDetailsScreenState();
@@ -22,30 +33,13 @@ class OrderDetailsScreen extends StatefulWidget {
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   bool ratingPopupShown = false;
 
+  Product? product;
+
+  // var product = Provider.of<ProductProvider>().products[productId];
+
   @override
   void initState() {
     super.initState();
-    retrieveAndPrintStoredProductId();
-    print('widget.productId: ${widget.productId}');
-  }
-
-  Future<void> storeProductId(int productId) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('selectedProductId', productId);
-  }
-
-  Future<int?> getStoredProductId() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('selectedProductId');
-  }
-
-  Future<void> retrieveAndPrintStoredProductId() async {
-    final storedProductId = await getStoredProductId();
-    if (storedProductId != null) {
-      print('Stored productId: $storedProductId');
-    } else {
-      print('No productId stored.');
-    }
   }
 
   @override
@@ -53,11 +47,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     final productProvider = Provider.of<ProductProvider>(context);
     final basketProvider = Provider.of<BasketProvider>(context);
 
-    // Fetch the product details for the given productId
     productProvider.fetchProductDetails(widget.productId);
 
+    // Fetch the product details for the given productId
+
     if (!ratingPopupShown) {
-        ratingPopupShown = true; 
+      ratingPopupShown = true;
       Future.delayed(Duration(seconds: 10), () {
         showDialog(
           context: context,
@@ -89,13 +84,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               actions: [
                 ElevatedButton(
                   onPressed: () async {
-                    await storeProductId(widget.productId);
-
                     final userIdPrefs = await SharedPreferences.getInstance();
                     final userId = userIdPrefs.getInt('userId');
-                    final productId = await getStoredProductId();
 
-                    if (userId != null && productId != null) {
+                    if (userId != null && widget.productId != null) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -103,7 +95,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ),
                       );
                     } else {
-                      print('UserId or ProductId not found in shared preferences.');
+                      print(
+                          'UserId or ProductId not found in shared preferences.');
                     }
                   },
                   child: Text('Rate this product'),
@@ -125,12 +118,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.cyan,
-        title: Text('Order Details'),
+        backgroundColor: Colors.red,
+        title: Text('Product Details'),
       ),
       body: Consumer<ProductProvider>(
         builder: (context, productProvider, _) {
           final selectedProduct = productProvider.selectedProduct;
+
+          print("Selected Product: $selectedProduct");
 
           if (productProvider.isLoading) {
             return Center(
@@ -144,40 +139,61 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 6,),
-                  Padding(
-                        padding: EdgeInsets.only(right: 300),
-                        child: Text(
-                          "Name: ",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                  ListTile(
-                    title: Text(' ${selectedProduct.name}'),
+                  SizedBox(
+                    height: 6,
                   ),
-                  Image.network(
-                    selectedProduct.imageUrl,
+                  Image.asset(
+                    widget.fx.imgpath,
                     height: 260,
-                    width: 330,
+                    width: double.infinity,
                   ),
                   SizedBox(
                     height: 30,
                   ),
-                   Padding(
-                        padding: EdgeInsets.only(right: 270),
-                        child: Text(
-                          "Descraption: ",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 300),
+                    child: Text(
+                      "Name: ",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  ),
                   ListTile(
-                    title: Text('  ${selectedProduct.description}'),
+                    title: Text(' ${widget.name}'),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 300),
+                    child: Text(
+                      "Price: ",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(' \$${widget.price} '),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 270),
+                    child: Text(
+                      "Descraption: ",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('  ${widget.description}'),
                   ),
                   SizedBox(
                     height: 30,
@@ -214,31 +230,31 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       SizedBox(
                         width: 5,
                       ),
-                       Icon(
-                          Icons.star_outlined,
-                          color: Colors.amber,
-                          size: 35,
-                        ),
-                        Icon(
-                          Icons.star_outlined,
-                          color: Colors.amber,
-                          size: 35,
-                        ),
-                        Icon(
-                          Icons.star_outlined,
-                          color: Colors.amber,
-                          size: 35,
-                        ),
-                        Icon(
-                          Icons.star_outlined,
-                          color: Colors.amber,
-                          size: 35,
-                        ),
-                        Icon(
-                          Icons.star_outlined,
-                          color: Colors.grey[350],
-                          size: 35,
-                        ),
+                      Icon(
+                        Icons.star_outlined,
+                        color: Colors.amber,
+                        size: 35,
+                      ),
+                      Icon(
+                        Icons.star_outlined,
+                        color: Colors.amber,
+                        size: 35,
+                      ),
+                      Icon(
+                        Icons.star_outlined,
+                        color: Colors.amber,
+                        size: 35,
+                      ),
+                      Icon(
+                        Icons.star_outlined,
+                        color: Colors.amber,
+                        size: 35,
+                      ),
+                      Icon(
+                        Icons.star_outlined,
+                        color: Colors.grey[350],
+                        size: 35,
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -258,9 +274,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         onPressed: () {
                           if (selectedProduct != null) {
                             basketProvider.addToBasket(BasketItem(
-                              productName: selectedProduct.name,
-                              imageUrl: selectedProduct.imageUrl,
-                              price: selectedProduct.price,
+                              productName: widget.name,
+                              imageUrl: widget.fx.imgpath,
+                              price: widget.price,
                             ));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:ecommerce_course/favorites_pages/favourite_provider.dart';
+import 'package:ecommerce_course/home_pages/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:ecommerce_course/home_pages/product_model.dart';
 
 class FavoriteScreen extends StatelessWidget {
   @override
@@ -64,12 +64,7 @@ class FavoriteScreen extends StatelessWidget {
   }
 
   Future<Product> _fetchProductDetails(int productId) async {
-    // Replace this with your logic to fetch product details
-    // from your product database or API
-    // Return a Product object with the required details
-    // For example, you can use an API call with Dio or http package
-    // to fetch product details by productId.
-    // Make sure to handle any exceptions that may occur during the fetch.
+    
     try {
       // Example using the http package
       final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/products/$productId'));
