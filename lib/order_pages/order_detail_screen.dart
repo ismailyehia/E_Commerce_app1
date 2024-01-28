@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class OrderDetailScreen extends StatefulWidget {
   final List<BasketItem> basketItems;
 
+
   OrderDetailScreen({required this.basketItems});
 
   @override
@@ -15,8 +16,6 @@ class OrderDetailScreen extends StatefulWidget {
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   double total = 0.0;
-  
-  
 
   @override
   void initState() {
@@ -29,9 +28,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         .fold(0.0, (prev, item) => prev + (item.price * item.quantity));
   }
 
-
-    Future<void> postOrderToApi(int userId, double total) async {
-    final apiUrl = 'http://10.0.2.2:8000/api/orders'; // Replace with your API URL
+  Future<void> postOrderToApi(int userId, double total) async {
+    final apiUrl =
+        'http://10.0.2.2:8000/api/orders'; // Replace with your API URL
     final body = jsonEncode({
       'userId': userId,
       'total': total,
@@ -97,7 +96,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     ),
                   ],
                 ),
-                leading: Image.network(basketItem.imageUrl),
+                leading: Image.asset(basketItem.imageUrl),
               );
             },
           ),
@@ -107,16 +106,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               backgroundColor:
                   MaterialStatePropertyAll(Color.fromARGB(255, 0, 184, 165))),
           onPressed: () async {
-            
             final prefs = await SharedPreferences.getInstance();
             final userId = prefs.getInt('userId');
 
-              if (userId != null && widget.basketItems.isNotEmpty) {
-                await postOrderToApi(userId, total);
-                // You can navigate to a success page or clear the basket items here
-              }
-
-
+            if (userId != null && widget.basketItems.isNotEmpty) {
+              await postOrderToApi(userId, total);
+              // You can navigate to a success page or clear the basket items here
+            }
           },
           child: Text('Finish'),
         ),
@@ -131,5 +127,3 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     );
   }
 }
-
-

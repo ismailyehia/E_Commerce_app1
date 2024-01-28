@@ -1,12 +1,21 @@
-import 'package:ecommerce_course/favorites_pages/favourite_product.dart';
+import 'package:ecommerce_course/favorites_pages/favourite_item.dart';
+
 import 'package:flutter/material.dart';
 
 class FavoriteProvider extends ChangeNotifier {
-  List<FavoriteItem> _items = [];
+  final List<FavoriteItem> _items = [];
 
   List<FavoriteItem> get items => _items;
 
-  // Define a method to get the list of favorite items
+  List<int> _favoriteProductIds = [];
+
+  List<int> get favoriteProductIds => _favoriteProductIds;
+
+  bool isFavorite(int productId) {
+    return _favoriteProductIds.contains(productId);
+  }
+
+
   List<FavoriteItem> getFavoriteItems() {
     return _items;
   }
@@ -18,6 +27,17 @@ class FavoriteProvider extends ChangeNotifier {
 
   void removeFromFavorites(FavoriteItem item) {
     _items.remove(item);
+    notifyListeners();
+  }
+
+  
+  void addToFavoritess(int productId) {
+    _favoriteProductIds.add(productId);
+    notifyListeners();
+  }
+
+  void removeFromFavoritess(int productId) {
+    _favoriteProductIds.remove(productId);
     notifyListeners();
   }
 }

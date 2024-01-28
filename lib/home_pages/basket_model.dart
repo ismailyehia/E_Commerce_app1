@@ -23,7 +23,7 @@ class BasketItem {
   factory BasketItem.fromJson(Map<String, dynamic> json) {
     return BasketItem(
       productName: json['productName'],
-      imageUrl: json['imageUrl'],
+      imageUrl: json['imageUrl'] ?? 'https://placehold.jp/400x300.png',
       price: json['price'],
     );
   }

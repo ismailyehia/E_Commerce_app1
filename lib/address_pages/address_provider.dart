@@ -106,6 +106,8 @@ class AddressProvider with ChangeNotifier {
   Address? get address => _address;
 
    Future<void> fetchAddressData() async {
+
+    
     try {
       final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/address'));
       print(response.body);
@@ -115,9 +117,11 @@ class AddressProvider with ChangeNotifier {
 
         if (data is List<dynamic>) { // Check if data is a List
           _addresses = List<Address>.from(data.map((addressData) {
+            
             return Address(
               addressLine1: addressData['address_line_1'],
               zipCode: addressData['zip_code'],
+              
             );
           }));
           notifyListeners();

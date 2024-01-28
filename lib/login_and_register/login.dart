@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -25,6 +25,8 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  
+
   String? errorMsg;
 
   Future<void> login(String email, String password) async {
@@ -35,7 +37,7 @@ class _LoginState extends State<Login> {
 
       if (response.statusCode == 200) {
         final List<dynamic> users = json.decode(response.body);
-         int userId = -1;
+        int userId = -1;
 
         bool loggedIn = false;
 
@@ -49,7 +51,7 @@ class _LoginState extends State<Login> {
         }
 
         if (loggedIn) {
-           final prefs = await SharedPreferences.getInstance();
+          final prefs = await SharedPreferences.getInstance();
         prefs.setString('email', email);
         prefs.setInt('userId', userId); // Save the user's ID
 
@@ -81,7 +83,62 @@ class _LoginState extends State<Login> {
 
 
 
- Future<void> register(
+// Future<void> register(
+//   String name,
+//   String email,
+//   String password,
+// ) async {
+//   final registrationData = {
+//     'name': name,
+//     'email': email,
+//     'password': password,
+//   };
+
+//   try {
+//     final response = await http.post(
+//       Uri.parse('http://10.0.2.2:8000/api/user'),
+//       body: registrationData,
+//     );
+
+//     if (response.statusCode == 201) {
+//       final Map<String, dynamic> responseBody = json.decode(response.body);
+
+//       // Check if 'userId' field exists and is not null in the response
+//       if (responseBody.containsKey('user_id') && responseBody['user_id'] != null) {
+//         // Extract user ID from the response
+//         final int userId = responseBody['user_id'];
+
+//         // Save the user ID to SharedPreferences
+//         final prefs = await SharedPreferences.getInstance();
+//         prefs.setInt('userId', userId);
+
+//         // Update the user ID in the database
+//         await updateUserIdInDatabase(userId);
+
+//         await Navigator.of(context).pushReplacement(
+//           MaterialPageRoute(
+//             builder: (context) => BottomNavigationBarExample(),
+//           ),
+//         );
+//       } else {
+//         setState(() {
+//           errorMsg = "Failed to get user ID from the response.";
+//         });
+//       }
+//     } else {
+//       setState(() {
+//         errorMsg = "Failed to register user.";
+//       });
+//     }
+//   } catch (e) {
+//     print("Error Details: $e");
+//     setState(() {
+//       errorMsg = "An error occurred.";
+//     });
+//   }
+// }
+
+Future<void> register(
   String name,
   String email,
   String password,
@@ -99,36 +156,17 @@ class _LoginState extends State<Login> {
     );
 
     if (response.statusCode == 201) {
-      final tokenResponse = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/create/token'), 
-        body: {
-          'email': email,
-          'password': password,
-          'device_name': 'iphonepromax', 
-        },
-      );
-      print("Token Response Status Code: ${tokenResponse.statusCode}");
+      final Map<String, dynamic> responseBody = json.decode(response.body);
 
-      if (tokenResponse.statusCode == 200) {
-        final token = tokenResponse.body; 
-        print("Token Response Status Code: ${tokenResponse.statusCode}");
-        print("Token: $token");
+      print("Response Body: $responseBody");
 
-        // Parse the user ID from the token
-        final List<String> tokenParts = token.split('|');
-        if (tokenParts.length == 2) {
-          final userId = int.tryParse(tokenParts[0]);
-          if (userId != null) {
-            print("User ID: $userId");
-            print("Email: $email");
-            
-            // Save the user ID and token to SharedPreferences
-            final prefs = await SharedPreferences.getInstance();
-            prefs.setInt('userId', userId);
-            prefs.setString('token', token);
-            prefs.setString('email', email);
-          }
-        }
+      if (responseBody.containsKey('user') && responseBody['user'] != null) {
+        
+        final int userId = responseBody['user']['id'];
+
+        // Save the user ID to SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setInt('userId', userId);
 
         await Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -137,7 +175,7 @@ class _LoginState extends State<Login> {
         );
       } else {
         setState(() {
-          errorMsg = "Failed to create token after registration.";
+          errorMsg = "Failed to get user ID from the response.";
         });
       }
     } else {
@@ -152,6 +190,10 @@ class _LoginState extends State<Login> {
     });
   }
 }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -3,10 +3,12 @@ import 'package:ecommerce_course/address_pages/address_provider.dart';
 import 'package:ecommerce_course/address_pages/userid.dart';
 import 'package:ecommerce_course/favorites_pages/favourite_provider.dart';
 import 'package:ecommerce_course/home_pages/basket_provider.dart';
+import 'package:ecommerce_course/home_pages/home.dart';
 
 
 import 'package:ecommerce_course/home_pages/order_details_screen.dart';
 import 'package:ecommerce_course/home_pages/product_provider.dart';
+import 'package:ecommerce_course/imagesprovider/images_model.dart';
 import 'package:ecommerce_course/login_and_register/login.dart';
 import 'package:ecommerce_course/navigator.dart';
 import 'package:ecommerce_course/order_pages/order_provider.dart';
@@ -16,7 +18,7 @@ import 'package:ecommerce_course/reviews/review_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 void main() async{
     WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +27,7 @@ void main() async{
     
     MultiProvider(
       providers: [
+        
         ChangeNotifierProvider(create: (_) => ProductProvider(),child: MyApp(),),
         ChangeNotifierProvider(create: (context) => OrdersProvider(),child: MyApp(),),
          ChangeNotifierProvider(create: (context) => BasketProvider()),
@@ -59,18 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: themeProvider.currentThemeMode,
-      onGenerateRoute: (settings) {
-        if (settings.name == '/orderDetails') {
-          final productId = settings.arguments as int?;
-          if (productId != null) {
-            return MaterialPageRoute(
-              builder: (context) => OrderDetailsScreen(productId),
-            );
-          }
-        }
-        return null; 
-      },
-      home: Login(), 
+      home: const Login(), 
     );
   }
 }

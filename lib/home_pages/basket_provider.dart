@@ -43,8 +43,7 @@ class BasketProvider extends ChangeNotifier {
 
   Future<void> _saveBasketItems() async {
     final prefs = await SharedPreferences.getInstance();
-    final basketItems =
-        _items.map((item) => json.encode(item.toJson())).toList();
+    final basketItems =_items.map((item) => json.encode(item.toJson())).toList();
     prefs.setStringList('basketItems', basketItems);
   }
 }
