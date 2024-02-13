@@ -1,16 +1,11 @@
 import 'package:ecommerce_course/Dark_mode/theme_provider.dart';
+import 'package:ecommerce_course/Languages/language_provider.dart';
 import 'package:ecommerce_course/address_pages/address_provider.dart';
 import 'package:ecommerce_course/address_pages/userid.dart';
 import 'package:ecommerce_course/favorites_pages/favourite_provider.dart';
 import 'package:ecommerce_course/home_pages/basket_provider.dart';
-import 'package:ecommerce_course/home_pages/home.dart';
-
-
-import 'package:ecommerce_course/home_pages/order_details_screen.dart';
 import 'package:ecommerce_course/home_pages/product_provider.dart';
-import 'package:ecommerce_course/imagesprovider/images_model.dart';
 import 'package:ecommerce_course/login_and_register/login.dart';
-import 'package:ecommerce_course/navigator.dart';
 import 'package:ecommerce_course/order_pages/order_provider.dart';
 import 'package:ecommerce_course/profile_pages/user_profile.dart';
 
@@ -37,6 +32,7 @@ void main() async{
           ChangeNotifierProvider(create: (_) => ReviewProvider()),
           ChangeNotifierProvider(create: (_) => ThemeProvider()),
           ChangeNotifierProvider(create: (_) => UserModel()),
+          ChangeNotifierProvider(create: (_) => LanguageProvider()),
 
         // Add other providers here if needed
       ],

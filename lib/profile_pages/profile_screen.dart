@@ -1,7 +1,11 @@
 import 'package:ecommerce_course/Dark_mode/Dark_mode_screen.dart';
 import 'package:ecommerce_course/Dark_mode/dark_mode.dart';
+import 'package:ecommerce_course/Languages/language_screen.dart';
+import 'package:ecommerce_course/about%20us/about_screen.dart';
+import 'package:ecommerce_course/favorites_pages/favorites_screen.dart';
 import 'package:ecommerce_course/home_pages/basket_screen.dart';
 import 'package:ecommerce_course/home_pages/order_details.dart';
+import 'package:ecommerce_course/login_and_register/login.dart';
 import 'package:ecommerce_course/profile_pages/add_email.dart';
 import 'package:ecommerce_course/profile_pages/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -44,101 +48,189 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 115, 6, 223),
-        title: Text('Profile Screen'),
+        title: Text('Profile Screen', style: TextStyle(color: Colors.white)),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          const Center(
-            child: CircleAvatar(
-              radius: 70,
-              backgroundImage: AssetImage('images/batman.jpg'),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 20,
             ),
-          ),
-          Padding(padding: EdgeInsets.all(12)),
-          
-          Center(
-            child: Text(
-            userModel.email.isNotEmpty
-                ? 'Email: ${userModel.email}'
-                : 'Email: $emailFromPrefs',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: ElevatedButton(
-              child: Text("Change email"),
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromARGB(255, 110, 9, 243)),
+            const Center(
+              child: CircleAvatar(
+                radius: 70,
+                backgroundImage: AssetImage('images/tshirt.webp'),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddEmail(),
-                  ),
-                ).then((result) {
-                  if (result != null) {
-                    // Update the email when returning from AddEmail screen
-                    userModel.setEmail(result);
-                  }
-                });
-              },
             ),
-          ),
-
-          SizedBox(height: 40,),
-
-          Text("  Settings",style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),),
-          Divider(),
-
-          SizedBox(height: 10,),
-
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-        MaterialPageRoute(
-          builder: (context) =>   BasketScreen(),
-        ),
-      );
-            },
-            child: Container(
-              
-              height: 50,
-              width: double.infinity,
-              child: Row(
-              children: [
-                Icon(Icons.person),
-                SizedBox(width: 7,),
-                Text("Personel Information",style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),)
-              ],
-            ),),
-
-
+            Padding(padding: EdgeInsets.all(12)),
             
+            Center(
+              child: Text(
+              userModel.email.isNotEmpty
+                  ? 'Email: ${userModel.email}'
+                  : 'Email: $emailFromPrefs',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: ElevatedButton(
+                child: Text("Change email",style: TextStyle(color: Colors.white)),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Color.fromARGB(255, 110, 9, 243)),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddEmail(),
+                    ),
+                  ).then((result) {
+                    if (result != null) {
+                      // Update the email when returning from AddEmail screen
+                      userModel.setEmail(result);
+                    }
+                  });
+                },
+              ),
+            ),
+        
+            SizedBox(height: 20,),
+        
+            Text("  Settings",style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+            ),),
+            Divider(),
+        
+            SizedBox(height: 10,),
+        
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+          MaterialPageRoute(
+            builder: (context) =>   BasketScreen(),
           ),
-          Divider(),
+        );
+              },
+              child: Container(
+                
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                children: [
+                  Icon(Icons.person),
+                  SizedBox(width: 7,),
+                  Text("Personel Information",style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),)
+                ],
+              ),),
+        
+        
+              
+            ),
+            Divider(),
+        
+            SizedBox(height: 3,),
+            
+        
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+          MaterialPageRoute(
+            builder: (context) =>   DarkModeScreens(),
+          ),
+        );
+              },
+              child: Container(
+                
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                children: [
+                  Icon(Icons.light_mode,color: Colors.orange[400],),
+                  SizedBox(width: 7,),
+                  Text("Dark Mode",style: TextStyle(
+                    fontWeight: FontWeight.bold)
+                  )
+                ],
+              ),),
+              
+        
+              
+            ),
+        
+            Divider(),
+        
+             GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+          MaterialPageRoute(
+            builder: (context) =>   FavoriteScreen(),
+          ),
+        );
+              },
+              child: Container(
+                
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                children: [
+                  Icon(Icons.favorite,color: Colors.pink,),
+                  SizedBox(width: 7,),
+                  Text("Wishlist",style: TextStyle(
+                    fontWeight: FontWeight.bold)
+                  )
+                ],
+              ),),
+              
+        
+              
+            ),
+        
+            Divider(),
+        
+             GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+          MaterialPageRoute(
+            builder: (context) =>   const LanguageScreen(),
+          ),
+        );
+              },
+              child: Container(
+                
+                height: 50,
+                width: double.infinity,
+                child: const Row(
+                children: [
+                  Icon(Icons.translate,color: Colors.brown,),
+                  SizedBox(width: 7,),
+                  Text("Languages",style: TextStyle(
+                    fontWeight: FontWeight.bold)
+                  )
+                ],
+              ),
+              ),
+              
+        
+              
+            ),
+        
+            
 
-          SizedBox(height: 3,),
-          
+            Divider(),
 
-          GestureDetector(
+           GestureDetector(
             onTap: () {
               Navigator.push(context,
         MaterialPageRoute(
-          builder: (context) =>   DarkModeScreens(),
+          builder: (context) =>   AboutScreen(),
         ),
       );
             },
@@ -146,11 +238,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               
               height: 50,
               width: double.infinity,
-              child: Row(
+              child: const Row(
               children: [
-                Icon(Icons.light_mode),
+                Icon(Icons.question_mark_outlined,color: Colors.black,),
                 SizedBox(width: 7,),
-                Text("Dark Mode",style: TextStyle(
+                Text("About us",style: TextStyle(
                   fontWeight: FontWeight.bold)
                 )
               ],
@@ -158,9 +250,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
             
 
             
-          )
+          ),
 
-        ],
+
+
+          Divider(),
+
+           GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+        MaterialPageRoute(
+          builder: (context) =>   Login(),
+        ),
+      );
+            },
+            child: Container(
+              
+              height: 50,
+              width: double.infinity,
+              child: const Row(
+              children: [
+                Icon(Icons.login,color: Colors.black,),
+                SizedBox(width: 7,),
+                Text("Log out",style: TextStyle(
+                  fontWeight: FontWeight.bold)
+                )
+              ],
+            ),),
+            
+
+            
+          ),
+        
+        
+        
+          ],
+        ),
       ),
     );
   }

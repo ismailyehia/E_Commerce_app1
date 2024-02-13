@@ -1,3 +1,4 @@
+import 'package:ecommerce_course/address_pages/adress_add.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'address_provider.dart';
@@ -35,7 +36,7 @@ class _AddressScreenState extends State<AddressScreen> {
         builder: (context, addressProvider, child) {
           final addresses = addressProvider.addresses;
 
-          if (addresses != null && addresses.isNotEmpty) {
+          if (addresses.isNotEmpty) {
             return ListView.builder(
               itemCount: addresses.length,
               itemBuilder: (context, index) {
@@ -54,6 +55,20 @@ class _AddressScreenState extends State<AddressScreen> {
             );
           }
         },
+      ),
+      floatingActionButtonLocation:  FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(onPressed: (){
+
+        Navigator.push(context,
+        MaterialPageRoute(
+          builder: (context) =>   AddressInputForm(),
+        ),
+      );
+      },
+
+      
+      child: Icon(Icons.add),
+      
       ),
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, avoid_print
+
 import 'package:ecommerce_course/home_pages/home.dart';
 import 'package:ecommerce_course/navigator.dart';
 import 'package:flutter/material.dart';

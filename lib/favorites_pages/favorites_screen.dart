@@ -1,12 +1,23 @@
 import 'dart:convert';
 
+import 'package:ecommerce_course/favorites_pages/favourite_item.dart';
 import 'package:ecommerce_course/favorites_pages/favourite_provider.dart';
 import 'package:ecommerce_course/home_pages/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-class FavoriteScreen extends StatelessWidget {
+class FavoriteScreen extends StatefulWidget {
+
+  FavoriteScreen({super.key});
+
+  @override
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
+}
+
+class _FavoriteScreenState extends State<FavoriteScreen> {
+  late String img;
+
   @override
   Widget build(BuildContext context) {
     final favoriteProvider = Provider.of<FavoriteProvider>(context);
@@ -40,13 +51,16 @@ class FavoriteScreen extends StatelessWidget {
                     } else {
                       final productDetails = snapshot.data as Product;
 
+                      FavoriteItem? fav;
                       return ListTile(
                         title: Text(productDetails.name),
-                        leading: Image.network(productDetails.imageUrl),
-                        subtitle: Text('\$${productDetails.price.toStringAsFixed(2)}'),
+                        leading: Image.asset(favorite.imageUrl),
+                        subtitle: Text(
+                            '\$${productDetails.price.toStringAsFixed(2)}'),
                         trailing: IconButton(
                           icon: Icon(Icons.favorite),
-                          color: Colors.red, // Change the color to indicate it's a favorite
+                          color: Colors
+                              .red, // Change the color to indicate it's a favorite
                           onPressed: () {
                             // Remove the favorite from the list and database
                             favoriteProvider.removeFromFavorites(favorite);
@@ -64,10 +78,10 @@ class FavoriteScreen extends StatelessWidget {
   }
 
   Future<Product> _fetchProductDetails(int productId) async {
-    
     try {
       // Example using the http package
-      final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/products/$productId'));
+      final response = await http
+          .get(Uri.parse('http://10.0.2.2:8000/api/products/$productId'));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -88,6 +102,3 @@ class FavoriteScreen extends StatelessWidget {
     }
   }
 }
-
-
-
