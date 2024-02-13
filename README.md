@@ -30,5 +30,9 @@ samples, guidance on mobile development, and a full API reference.
 ![Screenshot_1707851438](https://github.com/ismailyehia/E_Commerce_app1/assets/105608443/1dcd6ccf-9dbb-4491-bd6a-691d7816092e)
 ![Screenshot_1707851484](https://github.com/ismailyehia/E_Commerce_app1/assets/105608443/382c6504-5729-41c9-8826-e5741fa25eef)
 
+![Screenshot_1707851501](https://github.com/ismailyehia/E_Commerce_app1/assets/105608443/4944d71d-f51d-4f31-aef8-1a8010baa947)
+![Screenshot_1707851515](https://github.com/ismailyehia/E_Commerce_app1/assets/105608443/32820461-97a9-406a-9bdf-b333f498b71c)
+![Screenshot_1707853297](https://github.com/ismailyehia/E_Commerce_app1/assets/105608443/cf66b0fc-0370-4db0-963e-feb698bc94de)
+
 
 
