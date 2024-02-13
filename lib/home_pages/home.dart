@@ -21,6 +21,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Map<int, bool> favoritesMap = {};
   Set<int> favorites = {};
+  
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +36,7 @@ class _HomeState extends State<Home> {
     final TextEditingController searchController = TextEditingController();
     final productProvider = Provider.of<ProductProvider>(context);
     final favoriteProvider = Provider.of<FavoriteProvider>(context);
+    
 
     return Scaffold(
       //backgroundColor: ,
@@ -51,7 +54,6 @@ class _HomeState extends State<Home> {
               color: Colors.white,
             ), // Choose the appropriate icon
             onPressed: () {
-              // Navigate to another screen when the button is pressed
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => BasketScreen()),
@@ -343,15 +345,10 @@ Widget buildProductCard(
                   right: 2,
                   child: IconButton(
                     icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+                      isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
                       color: isFavorite ? Colors.red : Colors.grey,
-                      // isFavorite
-                      //     ? Icons.favorite
-                      //     : Icons.favorite_border,
-                      // // color: isFavorite ? Colors.red : Colors.grey,
-                      // color: favoriteProvider.isFavorite(product.productId)
-                      //     ? Colors.red
-                      //     : Colors.grey,
                     ),
                     onPressed: () async {
                       // final productId = product.productId;
@@ -362,11 +359,6 @@ Widget buildProductCard(
                       // } else {
                       //   favoriteProvider.addToFavoritess(product.productId);
                       // }
-
-
-
-
-
 
                       if (isFavorite) {
                         print('Removing from favorites...');
@@ -379,76 +371,82 @@ Widget buildProductCard(
 
                         final prefs = await SharedPreferences.getInstance();
                         final userId = prefs.getInt('userId');
+                        Imagess? fxx;
 
                         if (userId != null) {
                           final favoriteItem = FavoriteItem(
                             userId: userId,
                             productId: product.productId,
+                          imageUrl: items[index].imgpath
                           );
+                          
+
+
+
                           favoriteProvider.addToFavorites(favoriteItem);
                         }
 
-                      //     final favoriteProvider =
-                      //     Provider.of<FavoriteProvider>(context, listen: false);
-                      // final prefs = await SharedPreferences.getInstance();
+                        //     final favoriteProvider =
+                        //     Provider.of<FavoriteProvider>(context, listen: false);
+                        // final prefs = await SharedPreferences.getInstance();
 
-                      // final userId = prefs.getInt('userId');
-                      // final productId = product.productId;
+                        // final userId = prefs.getInt('userId');
+                        // final productId = product.productId;
 
-                      // if (userId != null && productId != null) {
-                      //   final favoriteItem = FavoriteItem(
-                      //     userId: userId,
-                      //     productId: productId,
-                      //   );
+                        // if (userId != null && productId != null) {
+                        //   final favoriteItem = FavoriteItem(
+                        //     userId: userId,
+                        //     productId: productId,
+                        //   );
 
-                      //   // Toggle the favorite state locally
-                      //   setState(() {
-                      //     isFavorite = !isFavorite;
-                      //     favoritesMap[product.productId] = isFavorite;
-                      //   });
+                        //   // Toggle the favorite state locally
+                        //   setState(() {
+                        //     isFavorite = !isFavorite;
+                        //     favoritesMap[product.productId] = isFavorite;
+                        //   });
 
-                      //   if (isFavorite) {
-                      //     favoriteProvider.addToFavorites(favoriteItem);
+                        //   if (isFavorite) {
+                        //     favoriteProvider.addToFavorites(favoriteItem);
 
-                      //     // Define your API URL
-                      //     const apiUrl =
-                      //         'http://10.0.2.2:8000/api/wishlist'; // Replace with your API URL
+                        //     // Define your API URL
+                        //     const apiUrl =
+                        //         'http://10.0.2.2:8000/api/wishlist'; // Replace with your API URL
 
-                      //     // Encode the favoriteItem to JSON
-                      //     final body = json.encode(favoriteItem.toJson());
+                        //     // Encode the favoriteItem to JSON
+                        //     final body = json.encode(favoriteItem.toJson());
 
-                      //     try {
-                      //       // Send the POST request
-                      //       final response = await http.post(
-                      //         Uri.parse(apiUrl),
-                      //         headers: <String, String>{
-                      //           'Content-Type':
-                      //               'application/json; charset=UTF-8',
-                      //         },
-                      //         body: body,
-                      //       );
+                        //     try {
+                        //       // Send the POST request
+                        //       final response = await http.post(
+                        //         Uri.parse(apiUrl),
+                        //         headers: <String, String>{
+                        //           'Content-Type':
+                        //               'application/json; charset=UTF-8',
+                        //         },
+                        //         body: body,
+                        //       );
 
-                      //       print(
-                      //           'Response Status Code: ${response.statusCode}');
-                      //       print('Response Body: ${response.body}');
+                        //       print(
+                        //           'Response Status Code: ${response.statusCode}');
+                        //       print('Response Body: ${response.body}');
 
-                      //       if (response.statusCode == 200) {
-                      //         // Successful response from the API
-                      //         // You can handle the response as needed.
-                      //         print('Favorite added to the database');
-                      //       } else {
-                      //         // Handle the case where the API request failed.
-                      //         print('Failed to add favorite to the database');
-                      //       }
-                      //     } catch (e) {
-                      //       // Handle any exceptions that occur during the request.
-                      //       print('Error during HTTP request: $e');
-                      //     }
-                      //   } else {
-                      //     // Handle the case where you want to remove the favorite
-                      //   }
-                      // } else {
-                      //   // Handle the case where userId or productId is null (e.g., user or product not available).
+                        //       if (response.statusCode == 200) {
+                        //         // Successful response from the API
+                        //         // You can handle the response as needed.
+                        //         print('Favorite added to the database');
+                        //       } else {
+                        //         // Handle the case where the API request failed.
+                        //         print('Failed to add favorite to the database');
+                        //       }
+                        //     } catch (e) {
+                        //       // Handle any exceptions that occur during the request.
+                        //       print('Error during HTTP request: $e');
+                        //     }
+                        //   } else {
+                        //     // Handle the case where you want to remove the favorite
+                        //   }
+                        // } else {
+                        //   // Handle the case where userId or productId is null (e.g., user or product not available).
                       }
                     },
                   ),
@@ -474,3 +472,7 @@ Widget buildProductCard(
     ),
   );
 }
+
+
+
+

@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:ecommerce_course/address_pages/address.dart';
 import 'package:ecommerce_course/address_pages/address_provider.dart';
-import 'package:ecommerce_course/address_pages/userid.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -49,8 +46,7 @@ class _AddressInputFormState extends State<AddressInputForm> {
       try {
         addressProvider.startSaving();
 
-        final apiUrl =
-            'http://10.0.2.2:8000/api/address';
+        final apiUrl ='http://10.0.2.2:8000/api/address';
 
         final headers = <String, String>{
           'Content-Type':
